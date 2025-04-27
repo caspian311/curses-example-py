@@ -17,6 +17,8 @@ class GlobalData():
     def __init__(self):
         self.counter = 0
         self.user_counter = 0
+        self.quit = False
+        self.quit_now = False
 
 MAIN = GlobalData()
 
@@ -27,9 +29,12 @@ class MainWindow(CursedWindow):
 
     @classmethod
     def update(cls):
+        if MAIN.quit_now:
+            cls.trigger('quit')
+
         cls.addstr("Main Window", 5, 5)
-        cls.addstr(f"Counter: {MAIN.counter}", 5, 6)
-        cls.addstr(f"Counter: {MAIN.user_counter}", 5, 7)
+        cls.addstr(f"Counter: {MAIN.counter:3d}", 5, 6)
+        cls.addstr(f"Counter: {MAIN.user_counter:3d}", 5, 7)
 
         cls.refresh()
 
@@ -41,21 +46,29 @@ class UserStatsWindow(CursedWindow):
 
     @classmethod
     def update(cls):
+        if MAIN.quit_now:
+            cls.trigger('quit')
+
         cls.addstr("User Stats Window", 5, 5)
-        cls.addstr(f"Counter: {MAIN.counter}", 5, 6)
-        cls.addstr(f"Counter: {MAIN.user_counter}", 5, 7)
+        cls.addstr(f"Counter: {MAIN.counter:3d}", 5, 6)
+        cls.addstr(f"Counter: {MAIN.user_counter:3d}", 5, 7)
 
         k = cls.getch()
         if k == 105:
             MAIN.user_counter += 1
         elif k == 100:
             MAIN.user_counter -= 1
+        elif k == ord('q'):
+            MAIN.quit = True
 
         cls.refresh()
 
 
 def main_app_stuff():
     for i in range(100):
+        if MAIN.quit:
+            MAIN.quit_now = True
+            break
         MAIN.counter += 1
         log(f"updating counter to {MAIN.counter}")
         sleep(1)
