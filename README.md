@@ -9,7 +9,7 @@ https://gist.github.com/claymcleod/b670285f334acd56ad1c
 ### Virtual Environment
 I think this is what's needed to set this up, but don't hold me to it.
 ````
-$ pip -m venv <path-to-venv-folder>
+$ python -m venv <path-to-venv-folder>
 # for windows
 $ <path-to-venv-folder>/Scripts/activate
 # for mac
